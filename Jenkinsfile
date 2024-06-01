@@ -4,7 +4,7 @@ pipeline{
 
     stages{ 
 
-        stage{'sonar analasys status'}{
+        stage('sonar analasys status'){
 
             agent{
 
