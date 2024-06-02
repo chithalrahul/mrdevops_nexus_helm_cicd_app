@@ -16,7 +16,8 @@ pipeline {
         stage('Sonar Analysis Status') {
             steps {
                 script {
-                    docker.image("${MAVEN_IMAGE}").inside("-v $WORKSPACE/settings.xml:${SETTINGS_PATH}") {
+                    // Adjusting the user to root to avoid permission issues
+                    docker.image("${MAVEN_IMAGE}").inside("-u root -v ${WORKSPACE}/settings.xml:${SETTINGS_PATH}") {
                         // Debugging steps to check if the settings.xml file exists in the Docker container
                         sh 'ls -la /root/.m2/'
                         sh 'cat /root/.m2/settings.xml'
@@ -28,6 +29,18 @@ pipeline {
                     }
                 }
             }
+        }
+    }
+
+    post {
+        always {
+            cleanWs()
+        }
+        failure {
+            echo 'Pipeline failed.'
+        }
+        success {
+            echo 'Pipeline succeeded.'
         }
     }
 }
