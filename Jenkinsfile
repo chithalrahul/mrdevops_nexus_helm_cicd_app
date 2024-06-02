@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     // Adjusting the user to root to avoid permission issues
-                    docker.image("${MAVEN_IMAGE}").inside("-u root -v ${WORKSPACE}/settings.xml:${SETTINGS_PATH}") {
+                    docker.image("${MAVEN_IMAGE}").inside("-u root -v ${WORKSPACE}/settings.xml:${SETTINGS_PATH} -e JAVA_HOME=${JAVA_HOME} -e PATH=${JAVA_HOME}/bin:${env.PATH}") {
                         // Debugging steps to check if the settings.xml file exists in the Docker container
                         sh 'ls -la /root/.m2/'
                         sh 'cat /root/.m2/settings.xml'
