@@ -2,8 +2,15 @@ pipeline {
     agent any
 
     environment {
+        
         MAVEN_IMAGE = 'maven:3.6.3-jdk-8'
         SETTINGS_PATH = '/root/.m2/settings.xml'
+    }
+    environment{
+
+        environment {
+        JAVA_HOME = '/usr/lib/jvm/java-11-openjdk' // Adjust this path to where Java 11 is installed on your server
+        PATH = "${JAVA_HOME}/bin:${env.PATH}"
     }
 
     stages {
