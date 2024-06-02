@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_IMAGE = 'maven:3.8.6-openjdk-17-slim' // Updated to a valid Docker image
+        MAVEN_IMAGE = 'maven:3.8.6' // Updated to a valid Docker image
         SETTINGS_PATH = '/root/.m2/settings.xml'
     }
 
