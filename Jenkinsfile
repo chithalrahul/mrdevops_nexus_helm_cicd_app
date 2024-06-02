@@ -23,6 +23,10 @@ pipeline {
                         // Debugging steps to check if the settings.xml file exists in the Docker container
                         sh 'ls -la /root/.m2/'
                         sh 'cat /root/.m2/settings.xml'
+                        
+                        // Verify JAVA_HOME and Java version
+                        sh 'echo $JAVA_HOME'
+                        sh 'java -version'
 
                         // Run Maven commands
                         withSonarQubeEnv('sonar-server') {
