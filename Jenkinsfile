@@ -2,10 +2,8 @@ pipeline {
     agent any
 
     environment {
-        MAVEN_IMAGE = 'maven:3.6.3-jdk-8'
+        MAVEN_IMAGE = 'maven:3.6.3-openjdk-11' // Updated to use a Docker image with Java 11
         SETTINGS_PATH = '/root/.m2/settings.xml'
-        JAVA_HOME = '/usr/lib/jvm/java-11-openjdk' // Adjust this path to where Java 11 is installed on your server
-        PATH = "${JAVA_HOME}/bin:${env.PATH}"
     }
 
     stages {
@@ -18,14 +16,12 @@ pipeline {
         stage('Sonar Analysis Status') {
             steps {
                 script {
-                    // Adjusting the user to root to avoid permission issues
-                    docker.image("${MAVEN_IMAGE}").inside("-u root -v ${WORKSPACE}/settings.xml:${SETTINGS_PATH} -e JAVA_HOME=${JAVA_HOME} -e PATH=${JAVA_HOME}/bin:${env.PATH}") {
+                    docker.image("${MAVEN_IMAGE}").inside("-u root -v ${WORKSPACE}/settings.xml:${SETTINGS_PATH}") {
                         // Debugging steps to check if the settings.xml file exists in the Docker container
                         sh 'ls -la /root/.m2/'
                         sh 'cat /root/.m2/settings.xml'
                         
-                        // Verify JAVA_HOME and Java version
-                        sh 'echo $JAVA_HOME'
+                        // Verify Java version
                         sh 'java -version'
 
                         // Run Maven commands
